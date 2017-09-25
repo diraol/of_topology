@@ -3,7 +3,7 @@ checks:
         code_rating: true
         duplicate_code: true
 filter:
-    paths: ['docs/*', 'napps/*', 'tests/*']
+    paths: ['docs/*', 'napps/*', 'tests/*', 'src/*', '.']
 build:
     environment:
         python: 3.6.0
@@ -13,7 +13,6 @@ build:
         # "override" to not run inferred "python setup.py install" and
         # "pip install -r requirements.txt"
         override:
-            - sudo apt-get install --no-install-recommends -y librrd-dev
     tests:
         before:
             - pip install git+git://github.com/kytos/python-openflow.git
