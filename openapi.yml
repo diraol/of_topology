@@ -15,38 +15,11 @@ info:
 
 paths:
 
-  api/kytos/of_topology/topology:
-    get:
-      summary: Return a json with topology details.
-      description: Sample description
-      tags:
-        - Current
-      responses:
-        200:
-          description: "Method responsible to return a json in /kytos/topology
-          route."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  nodes:
-                    type: array
-                    description: List of Nodes avaliable in the network
-                    items:
-                      $ref: '#/definitions/Node'
-                  links:
-                    type: array
-                    description: List of Links avaliable in the network
-                    items:
-                      $ref: '#/definitions/Link'
-
-
   api/kytos/of_topology/topology/nodes:
     get:
       summary: Return a JSON with all the nodes in the topology.
       tags:
-        - Future
+        - Current
       responses:
         200:
           description: "Nodes are datapaths and hosts. Datapaths will be
@@ -113,7 +86,7 @@ paths:
     get:
       summary: Return a JSON with all the nodes in the topology.
       tags:
-        - Future
+        - Current
       responses:
         200:
           description: "Every link has an alias, which can be user-defined in
@@ -182,7 +155,7 @@ paths:
     get:
       summary: Return a JSON with all the links in the topology.
       tags:
-        - Future
+        - Current
       responses:
         200:
           description: "The difference from the /links endpoint is in
