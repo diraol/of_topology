@@ -1,5 +1,4 @@
 """NApp responsible to update links detail and create a network topology."""
-
 import json
 
 from kytos.core import KytosNApp, log, rest
@@ -16,6 +15,7 @@ class Main(KytosNApp):
     This app intends to update the links between machines and switches. It
     considers that if an interface is connected to another interface then this
     is a link. If not, it must be a connection to a server.
+
     """
 
     def setup(self):
@@ -23,11 +23,11 @@ class Main(KytosNApp):
         pass
 
     def execute(self):
-        """Do nothing, only wait for packet-in messages."""
+        """Do nothing, only wait for PacketIn messages."""
         pass
 
     @staticmethod
-    @listen_to('kytos/of_core.v0x01.messages.in.ofpt_packet_in')
+    @listen_to('kytos/of_core.v0x0[14].messages.in.ofpt_packet_in')
     def update_links(event):
         """Receive a kytos event and update links interface.
 
@@ -36,6 +36,7 @@ class Main(KytosNApp):
 
         Parameters:
             event (KytosEvent): event with Ethernet packet.
+
         """
         ethernet = Ethernet()
         ethernet.unpack(event.message.data.value)
@@ -50,7 +51,7 @@ class Main(KytosNApp):
                 interface.update_endpoint(hw_address)
 
     @staticmethod
-    @listen_to('kytos/of_core.v0x01.messages.in.ofpt_port_status')
+    @listen_to('kytos/of_core.v0x0[14].messages.in.ofpt_port_status')
     def update_port_stats(event):
         """Receive a Kytos event and update port.
 
@@ -59,6 +60,7 @@ class Main(KytosNApp):
 
         Parameters:
             event (KytosEvent): event with port_status content.
+
         """
         port_status = event.message
         reasons = ['CREATED', 'DELETED', 'MODIFIED']
@@ -77,9 +79,12 @@ class Main(KytosNApp):
     def get_json_topology(self):
         """Return a json with topology details.
 
-        Method responsible to return a json in /kytos/topology route.
+        Method responsible to return a json in /api/kytos/topology/topology
+        route.
+
         Returns:
-            topology (string): json with topology details.
+            topology as a stringfyied json with topology details.
+
         """
         nodes, links = [], []
         switches = self.controller.switches
