@@ -55,26 +55,34 @@ class Main(KytosNApp):
         log.debug(msg, ethernet.source, event.source.switch.id,
                   event.message.in_port)
 
-    @staticmethod
     @listen_to('kytos/of_core.v0x0[14].messages.in.ofpt_port_status')
-    def update_port_stats(event):
-        """Receive a Kytos event and update port.
+    def update_port_status(self, event):
+        """Dispatch 'port.[created|modified|deleted]' event.
 
-        Get the event kytos/of_core.messages.in.ofpt_port_status and update the
-        port status.
+        Listen:
+            `kytos/of_core.v0x0[14].messages.in.ofpt_port_status`
 
-        Parameters:
-            event (KytosEvent): event with port_status content.
+        Dispatch:
+            `kytos/of_topology.port.[created|modified|deleted]` (KytosEvent):
+                { switch : <switch.id>,
+                  port: <port.port_no>
+                  port_description: {<description of the port>}
+                }
 
         """
         port_status = event.message
-        reasons = ['CREATED', 'DELETED', 'MODIFIED']
-        dpid = event.source.switch.dpid
-        port_no = port_status.desc.port_no
-        port_name = port_status.desc.name
-        reason = reasons[port_status.reason.value]
+        reason = port_status.reason.value
+
+        name = 'kytos/of_topology.port.' + reason.lower()
+        content = {'switch': event.source.id,
+                   'port': port_status.desc.port_no,
+                   'port_description': vars(port_status.desc)}
+
+        event = KytosEvent(name=name, content=content)
+        self.controller.buffers.app.put(event)
+
         msg = 'The port %s (%s) from switch %s was %s.'
-        log.debug(msg, port_no, port_name, dpid, reason)
+        log.debug(msg, port_status.desc.port_no, event.source.id, reason)
 
     def shutdown(self):
         """End of the application."""
