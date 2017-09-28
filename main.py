@@ -26,29 +26,34 @@ class Main(KytosNApp):
         """Do nothing, only wait for PacketIn messages."""
         pass
 
-    @staticmethod
     @listen_to('kytos/of_core.v0x0[14].messages.in.ofpt_packet_in')
-    def update_links(event):
-        """Receive a kytos event and update links interface.
+    def update_links(self, event):
+        """Dispatch 'reacheable.mac' event.
 
-        Get the event kytos/of_core.messages.in.ofpt_packet_in and update
-        the interface endpoints, ignoring the LLDP packages.
+        Listen:
+            `kytos/of_core.v0x0[14].messages.in.ofpt_packet_in` (KytosEvent)
 
-        Parameters:
-            event (KytosEvent): event with Ethernet packet.
+        Dispatch:
+            `reachable.mac` (KytosEvent):
+                { switch : <switch.id>,
+                  port: <port.port_no>
+                  reachable_mac: <mac_address>
+                }
 
         """
         ethernet = Ethernet()
         ethernet.unpack(event.message.data.value)
-        if ethernet.ether_type != constants.LLDP_ETHERTYPE:
-            port_no = event.message.in_port
-            hw_address = ethernet.source
-            switch = event.source.switch
-            interface = switch.get_interface_by_port_no(port_no.value)
 
-            if interface is not None and \
-               not interface.is_link_between_switches():
-                interface.update_endpoint(hw_address)
+        name = 'kytos/of_topology.reachable.mac'
+        content = {'switch': event.source.switch.id,
+                   'port': event.message.in_port,
+                   'reachable_mac': ethernet.source}
+        event = KytosEvent(name, content)
+        self.controller.buffers.app.put(event)
+
+        msg = 'The MAC %s is reachable from switch/port %s/%s.'
+        log.debug(msg, ethernet.source, event.source.switch.id,
+                  event.message.in_port)
 
     @staticmethod
     @listen_to('kytos/of_core.v0x0[14].messages.in.ofpt_port_status')
