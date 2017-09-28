@@ -1,15 +1,17 @@
-"""NApp responsible to update links detail and create a network topology."""
+"""Read OF messages and dispatch topology related events about them."""
 from kytos.core import KytosEvent, KytosNApp, log
 from kytos.core.helpers import listen_to
 from pyof.foundation.network_types import Ethernet
 
 
 class Main(KytosNApp):
-    """Main class of a KytosNApp, responsible build a network topology.
+    """Translate OF messages into network related events.
 
-    This app intends to update the links between machines and switches. It
-    considers that if an interface is connected to another interface then this
-    is a link. If not, it must be a connection to a server.
+    Dispatch events with information related to network topology and
+    network reachability.
+
+    It works by listening all PacketIns and PortStatus OpenFlow messages and
+    generating events with the content that may be used by other NApps.
 
     """
 
