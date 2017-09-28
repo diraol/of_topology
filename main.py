@@ -1,12 +1,7 @@
 """NApp responsible to update links detail and create a network topology."""
-import json
-
-from kytos.core import KytosNApp, log, rest
+from kytos.core import KytosEvent, KytosNApp, log
 from kytos.core.helpers import listen_to
-from pyof.foundation.basic_types import HWAddress
 from pyof.foundation.network_types import Ethernet
-
-from napps.kytos.of_topology import constants
 
 
 class Main(KytosNApp):
