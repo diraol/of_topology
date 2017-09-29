@@ -25,10 +25,6 @@ repository. To install this NApp, run:
 
    $ kytos napps install kytos/of_topology
 
-If you are going to install kytos-napps from source code, all napps will be
-installed by default (just remember you need to enable the ones you want
-running).
-
 ######
 EVENTS
 ######

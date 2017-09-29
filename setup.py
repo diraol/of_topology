@@ -59,7 +59,7 @@ class TestCoverage(SimpleCommand):
 
     def run(self):
         """Run unittest quietly and display coverage report."""
-        cmd = 'coverage3 run -m unittest discover -qs src' \
+        cmd = 'coverage3 run -m unittest discover -qs .' \
               ' && coverage3 report'
         call(cmd, shell=True)
 
@@ -91,11 +91,11 @@ class CITest(SimpleCommand):
 setup(name='kytos/of_topology',
       version=read_version_from_json(),
       description='Core Napps developed by Kytos Team',
-      url='http://github.com/kytos/kytos-napps',
+      url='http://github.com/kytos/of_topology',
       author='Kytos Team',
       author_email='of-ng-dev@ncc.unesp.br',
       license='MIT',
-      install_requires=['kytos-utils>=2017.2', 'kytos>=2017.2'],
+      install_requires=['kytos-utils>2017.2b1', 'kytos>2017.2b1'],
       cmdclass={
           'clean': Cleaner,
           'ci': CITest,
