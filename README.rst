@@ -2,6 +2,11 @@
 Overview
 ########
 
+.. attention::
+
+    THIS NAPP IS STILL EXPERIMENTAL AND IT'S EVENTS, METHODS AND STRUCTURES MAY
+    CHANGE A LOT ON THE NEXT FEW DAYS/WEEKS, USE IT AT YOUR OWN DISCERNEMENT
+
 This NApp is responsible for discovering and updating all links in the network.
 It can manage links between datapaths themselves or between end-hosts and
 datapaths. This application depends on **of_lldp**: it makes use of LLDP
