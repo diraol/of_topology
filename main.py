@@ -28,10 +28,10 @@ class Main(KytosNApp):
         """Dispatch 'reacheable.mac' event.
 
         Listen:
-            `kytos/of_core.v0x0[14].messages.in.ofpt_packet_in` (KytosEvent)
+            `kytos/of_core.v0x0[14].messages.in.ofpt_packet_in`
 
         Dispatch:
-            `reachable.mac` (KytosEvent):
+            `reachable.mac`:
                 { switch : <switch.id>,
                   port: <port.port_no>
                   reachable_mac: <mac_address>
@@ -60,7 +60,7 @@ class Main(KytosNApp):
             `kytos/of_core.v0x0[14].messages.in.ofpt_port_status`
 
         Dispatch:
-            `kytos/of_topology.port.[created|modified|deleted]` (KytosEvent):
+            `kytos/of_topology.switch.port.[created|modified|deleted]`:
                 { switch : <switch.id>,
                   port: <port.port_no>
                   port_description: {<description of the port>}
@@ -70,7 +70,7 @@ class Main(KytosNApp):
         port_status = event.message
         reason = port_status.reason.value
 
-        name = 'kytos/of_topology.port.' + reason.lower()
+        name = 'kytos/of_topology.switch.port.' + reason.lower()
         content = {'switch': event.source.id,
                    'port': port_status.desc.port_no,
                    'port_description': vars(port_status.desc)}

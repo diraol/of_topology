@@ -70,22 +70,8 @@ Content
 Generated
 *********
 
-kytos/of_topology.reachable.mac
-===============================
-Event reporting that a mac address is reachable from a specific switch/port.
-This information is retrieved from PacketIns generated sent by the Switches.
-
-Content
--------
-
-.. code-block:: python3
-
-    { 'switch': <switch.id>,  # switch identification
-      'port': <port.port_no>,  # port number
-      'reachable_mac': <reachable_mac_address>}  # string with mac address
-
-kytos/of_topology.port.created
-==============================
+kytos/of_topology.switch.port.created
+=====================================
 Event reporting that a port was created/added in the datapath.
 It is dispatched after a PortStatus sent by a datapath is parsed.
 
@@ -99,8 +85,8 @@ Content
      'port_description': {<description of the port>}  # port description dict
    }
 
-kytos/of_topology.port.modified
-===============================
+kytos/of_topology.switch.port.modified
+=======================================
 Event reporting that a port was modified in the datapath.
 It is dispatched after a PortStatus sent by a datapath is parsed.
 
@@ -120,8 +106,8 @@ Content
      'port_description': {<description of the port>}  # port description dict
    }
 
-kytos/of_topology.port.deleted
-==============================
+kytos/of_topology.switch.port.deleted
+=====================================
 Event reporting that a port was deleted from the datapath.
 It is dispatched after a PortStatus sent by a datapath is parsed.
 
@@ -134,3 +120,17 @@ Content
      'port_no': <port.port_no>,  # port number
      'port_description': {<description of the port>}  # port description dict
    }
+
+kytos/of_topology.reachable.mac
+===============================
+Event reporting that a mac address is reachable from a specific switch/port.
+This information is retrieved from PacketIns generated sent by the Switches.
+
+Content
+-------
+
+.. code-block:: python3
+
+    { 'switch': <switch.id>,  # switch identification
+      'port': <port.port_no>,  # port number
+      'reachable_mac': <reachable_mac_address>}  # string with mac address
